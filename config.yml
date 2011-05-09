@@ -6,7 +6,7 @@ global:
     - period: 1
       delay: 0
       tips:
-          - $3Remember to register at our forums, somewhere
+          - "$3Remember to register at our forums, somewhere"
 
 world:
     # every 5 minutes, one of those 3 messages
