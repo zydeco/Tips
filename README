@@ -1,0 +1,10 @@
+Tips plugin for Bukkit
+
+This plugin will broadcast messages at given time intervals.
+You can have different sets of tips for each world, or global, see the example
+config.yml file.
+
+The config file should go in plugins/Tips/config.yml.
+
+To reload the config file, use /tips reload (requires op or tips.reload 
+permission) or reload the plugin. 

@@ -1,0 +1,28 @@
+# tips by world, or 'global' for all worlds
+# delay/period is in minutes
+# color code: $x, where x is the color code [0-9a-f]
+
+global:
+    - period: 1
+      delay: 0
+      tips:
+          - $3Remember to register at our forums, somewhere
+
+world:
+    # every 5 minutes, one of those 3 messages
+    - period: 5
+      tips:
+          - "$6Hello, world"
+          - $BSomething random
+          - $FSomething even more random
+    # every minute
+    - period: 1
+      delay: 0
+      tips: 
+          - $5Another minute has elapsed
+
+nether:
+    # every 2 minutes
+    - period: 2
+      tips:
+          - $4be careful!
