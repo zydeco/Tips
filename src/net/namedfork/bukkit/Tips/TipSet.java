@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.namedfork.bukkit.Tips;
 
 import java.util.Iterator;
@@ -21,6 +17,7 @@ public class TipSet implements Runnable {
     private final int delay, period;
     private final String[] tips;
     private final Random rng;
+    private int nextTip;
     
     public TipSet(Server server, World world, int delay, int period, List<String> tips, long seed) {
         this.server = server;
@@ -28,7 +25,8 @@ public class TipSet implements Runnable {
         this.delay = delay;
         this.period = period;
         this.tips = tips.toArray(new String[0]);
-        this.rng = new Random(seed == 0?(long)((Math.random()-0.5)*2*Long.MAX_VALUE):seed);
+        this.rng = seed == 0?null:new Random(seed);
+        nextTip = -1;
         
         // format tips
         for(int i=0; i < this.tips.length; i++) {
@@ -39,7 +37,14 @@ public class TipSet implements Runnable {
     public void run() {
         // find a tip
         if (tips.length == 0) return;
-        String tip = tips.length == 1? tips[0]:tips[rng.nextInt(tips.length)];
+        else if (tips.length == 1) {
+            nextTip = 0;
+        } else if (rng != null) {
+            nextTip = rng.nextInt(tips.length);
+        } else {
+            nextTip = (nextTip + 1) % tips.length;
+        }
+        final String tip = tips[nextTip];
         
         if (getWorld() == null) {
             // tip for everyone

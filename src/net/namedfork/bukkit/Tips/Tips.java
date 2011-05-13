@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
@@ -25,9 +26,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Tips extends JavaPlugin {
     private ArrayList<TipSet> tipSets;
     private PermissionHandler permissionHandler;
+    private Random rng;
     
     public void onEnable() {
         Logger logger = getServer().getLogger();
+        rng = new Random(System.currentTimeMillis());
         
         // Load config
         loadConfig(null);
@@ -58,11 +61,12 @@ public class Tips extends JavaPlugin {
                 HashMap t = (HashMap)i.next();
                 int period = ((Number)t.get("period")).intValue();
                 int delay = t.containsKey("delay")?((Number)t.get("delay")).intValue():period;
-                tipSets.add(new TipSet(getServer(), w, delay, period, (List<String>)t.get("tips"), 0));
+                boolean isRandom = !(t.containsKey("random") && ((Boolean)t.get("random")).booleanValue() == false);
+                tipSets.add(new TipSet(getServer(), w, delay, period, (List<String>)t.get("tips"), isRandom?rng.nextLong():0));
             }
             return tipSets;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("tipSetsForWorld: "+ e.toString());
             return null;
         }
     }
