@@ -1,6 +1,6 @@
 name: Tips
 main: net.namedfork.bukkit.Tips.Tips
-version: 1.0.1
+version: 1.0.2
 author: Jesús A. Álvarez
 authorEmail: zydeco@namedfork.net
 authorUrl: http://namedfork.net
@@ -9,3 +9,7 @@ commands:
     description: reload tips
     usage: 'Usage: /tips reload'
     permission: tips.reload
+permissions:
+  tips.reload:
+    description: Allows to reload tips
+    default: op
