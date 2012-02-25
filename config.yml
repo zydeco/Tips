@@ -1,0 +1,51 @@
+# tips by world, or 'global' for all worlds
+# note: global tips are more efficient
+# delay/period is in minutes
+# color code: $x, where x is the color code [0-9a-f]
+# random is optional, defaults to true
+
+global:
+    - period: 1
+      delay: 0
+      random: true
+      tips:
+          - $3random tip 1
+          - $4random tip 2
+          - $5random tip 3
+          - $6random tip 4
+    - period: 1
+      delay: 0
+      random: false
+      tips:
+          - $3sequential tip 1
+          - $4sequential tip 2
+          - $5sequential tip 3
+          - $6sequential tip 4
+          - $7sequential tip 5
+    
+    - period: 2
+      delay: 0
+      random: false
+      tips:
+            - $8other sequential tip 1
+            - $9other sequential tip 2
+            - $aother sequential tip 3
+            - $bother sequential tip 4
+            - $cother sequential tip 5
+
+world:
+    - period: 5
+      delay: 0
+      tips:
+          - "$6Hello, world"
+          - $BSomething else
+          - $FWhat is this?
+    - period: 1
+      delay: 0
+      tips: 
+          - $5Another minute has elapsed
+
+world_nether:
+    - period: 2
+      tips:
+          - $4be careful!
