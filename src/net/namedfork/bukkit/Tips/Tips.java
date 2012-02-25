@@ -47,7 +47,7 @@ public class Tips extends JavaPlugin {
     private List<TipSet> tipSetsForWorld(World w) {
         try {
             // get list of tips for world from config
-            List tipList = getConfiguration().getList(w == null?"global":w.getName());
+            List tipList = getConfig().getList(w == null?"global":w.getName());
             if (tipList == null) return null;
             List<TipSet> tipSets = new ArrayList<TipSet>(tipList.size());
             // create TipSet for every item
@@ -75,7 +75,7 @@ public class Tips extends JavaPlugin {
         
         // load config
         try {
-            getConfiguration().load();
+            this.getConfig();
         } catch (Exception e) {
             msg = "Invalid tips configuration file.";
             logger.log(Level.INFO, "[Tips] " + msg);
