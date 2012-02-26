@@ -75,7 +75,7 @@ public class Tips extends JavaPlugin {
         
         // load config
         try {
-            this.getConfig();
+            this.reloadConfig();
         } catch (Exception e) {
             msg = "Invalid tips configuration file.";
             logger.log(Level.INFO, "[Tips] " + msg);
