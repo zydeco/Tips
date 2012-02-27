@@ -3,24 +3,28 @@ package net.namedfork.bukkit.Tips;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import org.bukkit.Server;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
 
 /**
  *
  * @author zydeco
  */
 public class TipSet implements Runnable {
-    private final Server server;
     private final World world;
     private final int delay, period;
     private final String[] tips;
     private final Random rng;
+    private final String id;
+    private final Permission perm;
     private int nextTip;
     
-    public TipSet(Server server, World world, int delay, int period, List<String> tips, long seed) {
-        this.server = server;
+    public TipSet(String id, World world, int delay, int period, List<String> tips, long seed) {
+        this.id = id;
         this.world = world;
         this.delay = delay;
         this.period = period;
@@ -32,6 +36,22 @@ public class TipSet implements Runnable {
         for(int i=0; i < this.tips.length; i++) {
             this.tips[i] = formatTip(this.tips[i]);
         }
+        
+        // register permission
+        if (id != null) {
+            PluginManager pm = Bukkit.getServer().getPluginManager();
+            String permName = "tips.receive."+id;
+            if (pm.getPermission(permName) == null) {
+                perm = new Permission(permName, PermissionDefault.FALSE);
+                System.out.println("REGISTERING PERMISSION "+perm.getName());
+                pm.addPermission(perm);
+            } else {
+                perm = pm.getPermission(permName);
+            }
+        } else {
+            perm = null;
+        }
+        
     }
     
     public void run() {
@@ -46,14 +66,27 @@ public class TipSet implements Runnable {
         }
         final String tip = tips[nextTip];
         
-        if (getWorld() == null) {
+        if (world == null && perm == null) {
             // tip for everyone
-            getServer().broadcastMessage(tip);
+            Bukkit.getServer().broadcastMessage(tip);
+        } else if (world == null && perm != null) {
+            // global tip with permission
+            Player players[] = Bukkit.getServer().getOnlinePlayers();
+            for(Player p: players) {
+                if (p.hasPermission(perm)) System.out.println(p.getName() + " has permission " + perm.getName());
+                if (p.hasPermission("tips.receive.*")) System.out.println(p.getName() + " has permission tips.receive.*");
+                if (p.hasPermission(perm) || p.hasPermission("tips.receive.*")) {
+                    p.sendMessage(tip);
+                }
+            }
         } else {
             // tip for world
-            Iterator<Player> i = getWorld().getPlayers().iterator();
+            Iterator<Player> i = world.getPlayers().iterator();
             while (i.hasNext()) {
-                i.next().sendMessage(tip);
+                Player p = i.next();
+                if (perm == null || p.hasPermission(perm) || p.hasPermission("tips.receive.*")) {
+                    p.sendMessage(tip);
+                }
             }
         }
     }
@@ -63,10 +96,6 @@ public class TipSet implements Runnable {
         return tip.replace("$", "\u00A7").replace("\u00A7$", "$");
     }
     
-    public Server getServer() {
-        return server;
-    }
-
     public World getWorld() {
         return world;
     }

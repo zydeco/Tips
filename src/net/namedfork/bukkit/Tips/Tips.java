@@ -56,7 +56,7 @@ public class Tips extends JavaPlugin {
                 int period = ((Number)t.get("period")).intValue();
                 int delay = t.containsKey("delay")?((Number)t.get("delay")).intValue():period;
                 boolean isRandom = !(t.containsKey("random") && ((Boolean)t.get("random")).booleanValue() == false);
-                tipSets.add(new TipSet(getServer(), w, delay, period, (List<String>)t.get("tips"), isRandom?rng.nextLong():0));
+                tipSets.add(new TipSet((String)t.get("id"), w, delay, period, (List<String>)t.get("tips"), isRandom?rng.nextLong():0));
             }
             return tipSets;
         } catch (Exception e) {
