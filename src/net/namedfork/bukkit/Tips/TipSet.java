@@ -43,7 +43,6 @@ public class TipSet implements Runnable {
             String permName = "tips.receive."+id;
             if (pm.getPermission(permName) == null) {
                 perm = new Permission(permName, PermissionDefault.FALSE);
-                System.out.println("REGISTERING PERMISSION "+perm.getName());
                 pm.addPermission(perm);
             } else {
                 perm = pm.getPermission(permName);
@@ -73,8 +72,6 @@ public class TipSet implements Runnable {
             // global tip with permission
             Player players[] = Bukkit.getServer().getOnlinePlayers();
             for(Player p: players) {
-                if (p.hasPermission(perm)) System.out.println(p.getName() + " has permission " + perm.getName());
-                if (p.hasPermission("tips.receive.*")) System.out.println(p.getName() + " has permission tips.receive.*");
                 if (p.hasPermission(perm) || p.hasPermission("tips.receive.*")) {
                     p.sendMessage(tip);
                 }
