@@ -23,7 +23,10 @@ global:
           - $6sequential tip 4
           - $7sequential tip 5
     
-    - period: 2
+    # if you set an ID, the tip will only be received by users with
+    # tips.receive.<id> permission (tips.receive.others in this example)
+    - id: others
+       period: 2
       delay: 0
       random: false
       tips:
